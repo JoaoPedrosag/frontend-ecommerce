@@ -29,7 +29,8 @@ const Cadastro = () => {
         nome: form.nome,        
         email: form.email,
         password: form.password,
-        admin: result
+        admin: result,
+        shop_name: form.shop_name ?? '',
       })
       if (data) {
         const responseLogin = await userService.login({
@@ -58,6 +59,7 @@ const Cadastro = () => {
     && validarSenha(form.password)
     && validarConfirmarSenha(form.password, form.confirmarPassword)
     && validarNome(form.nome)
+    
   }
 
   return (
