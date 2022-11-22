@@ -16,18 +16,20 @@ const Cadastro = () => {
   const navigate = useNavigate()
   const onChange = (event) => {    
     setChecked(!checked);
-   
+    return checked;
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      const result = onChange();
+      console.log(result);
       setLoading(true);      
-      console.log(form)
+      
       const { data } = await userService.cadastrar({
         nome: form.nome,        
         email: form.email,
         password: form.password,
-        admin: form.checked
+        admin: result
       })
       if (data) {
         const responseLogin = await userService.login({
@@ -47,7 +49,7 @@ const Cadastro = () => {
   }
 
   const handleChange = (event) => {    
-
+    console.log({[event.target.name]: event.target.value})
     setForm({...form, [event.target.name]: event.target.value})
   }
 
@@ -98,6 +100,14 @@ const Cadastro = () => {
         value={checked}
         onChange={onChange}
         />
+        {checked && (
+          <Input
+          name='show_name'
+          placeholder='Digite sua loja'
+          onChange={handleChange}
+          type='text'          
+          />
+        )}
         <SubContainerSign>
           <p>Já possui conta?</p>
           <NavLink to="*">Login</NavLink>
