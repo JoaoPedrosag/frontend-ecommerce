@@ -1,4 +1,4 @@
-const Checkbox = ({ id, label, value, onChange, onClick }) => {
+const Checkbox = ({ id, label, value, onChange }) => {
     return (
       <div>
         <input 
@@ -7,7 +7,6 @@ const Checkbox = ({ id, label, value, onChange, onClick }) => {
           checked={value} 
           onChange={onChange}
           text={label} 
-          onClick={onClick}
         />
         <label htmlFor={id}>{label}</label>
       </div>
