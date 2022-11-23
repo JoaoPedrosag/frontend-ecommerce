@@ -38,6 +38,13 @@ export const Form = styled.form`
     color: white;
     font-size: 14px;
   }
+
+  label {
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+    font-weight: light;
+  }
 `
 
 export const SubContainerSign = styled.div`

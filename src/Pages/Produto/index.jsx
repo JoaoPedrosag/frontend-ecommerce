@@ -4,6 +4,7 @@ import Input from '../../Components/Input/index'
 import Botao from '../../Components/Botao/index'
 import AdminService from '../../Services/AdminService'
 import { NavLink, useNavigate } from 'react-router-dom'
+import {toastSuccess, toastError} from '../../Utils/toast'
 
 
 const adminService = new AdminService()
@@ -24,13 +25,13 @@ const CadastroProduto = () => {
         shop_name: form.shop_name,
       })
       if (data) {   
-          alert('Produto Cadastrado com Sucesso')
+        toastSuccess('Produto Cadastrado com Sucesso')
           navigate('/home')        
     }
       setLoading(false)
      }
     catch (err) {
-      alert('Algo deu errado com o Cadastro' + err)
+      toastError('Algo deu errado com o Cadastro' + err)
     }
   }
 

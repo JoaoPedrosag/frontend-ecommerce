@@ -5,12 +5,13 @@ import Button from '../../Components/Botao/index'
 import { validarEmail, validarSenha } from '../../Utils/validadores'
 import UserService from '../../Services/UserService'
 import { NavLink, useNavigate } from 'react-router-dom'
+import {toastSuccess, toastError} from '../../Utils/toast'
 
 const userService = new UserService()
 
 const Login = () => {
   const [loading, setLoading] = useState()
-  const [form, setForm] = useState([])
+  const [form, setForm] = useState({})
   const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
@@ -20,15 +21,15 @@ const Login = () => {
       setLoading(true)
       const response = await userService.login(form)
       console.log(form);
-      console.log('response do Login', response)
       if (response === true) {
-        alert('usuário Logado com Sucesso')
+        toastSuccess('usuário Logado com Sucesso')
         navigate('/home')
       }
       setLoading(false)
     }
     catch (err) {
-      alert('Algo deu errado com o Login' + err)
+      setLoading(false)
+      toastError(err.response.data.message)
     }
   }
 
