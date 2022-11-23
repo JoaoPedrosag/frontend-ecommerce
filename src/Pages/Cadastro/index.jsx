@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Container, Form, SubContainerSign } from './styles'
 import Input from '../../Components/Input/index'
 import Botao from '../../Components/Botao/index'
@@ -6,6 +6,7 @@ import { validarEmail, validarSenha, validarNome, validarConfirmarSenha } from '
 import UserService from '../../Services/UserService'
 import { NavLink, useNavigate } from 'react-router-dom'
 import Checkbox from '../../Components/CheckBox'
+import {toastSuccess, toastError} from '../../Utils/toast'
 
 const userService = new UserService()
 
@@ -14,7 +15,7 @@ const Cadastro = () => {
   const [checked, setChecked] = useState(false);
   const [form, setForm] = useState([])
   const navigate = useNavigate()
-  const onChange = (event) => {    
+  const onChange = (event) => {
     setChecked(!checked);
     return checked;
   };
@@ -23,10 +24,10 @@ const Cadastro = () => {
     try {
       const result = onChange();
       console.log(result);
-      setLoading(true);      
-      
+      setLoading(true);
+
       const { data } = await userService.cadastrar({
-        nome: form.nome,        
+        nome: form.nome,
         email: form.email,
         password: form.password,
         admin: result,
@@ -38,28 +39,27 @@ const Cadastro = () => {
           password: form.password
         })
         if (responseLogin === true) {
-          alert('usuário Cadastrado com Sucesso')
+          toastSuccess('usuário Cadastrado com Sucesso')
           navigate('/home')
         }
-    }
+      }
       setLoading(false)
     }
     catch (err) {
-      alert('Algo deu errado com o Cadastro' + err)
+      toastError(err.response.data.message);
     }
   }
 
-  const handleChange = (event) => {    
-    console.log({[event.target.name]: event.target.value})
-    setForm({...form, [event.target.name]: event.target.value})
+  const handleChange = (event) => {
+    console.log({ [event.target.name]: event.target.value })
+    setForm({ ...form, [event.target.name]: event.target.value })
   }
 
   const validadorInput = () => {
-    return validarEmail(form.email) 
-    && validarSenha(form.password)
-    && validarConfirmarSenha(form.password, form.confirmarPassword)
-    && validarNome(form.nome)
-    
+    return validarEmail(form.email)
+      && validarSenha(form.password)
+      && validarConfirmarSenha(form.password, form.confirmarPassword)
+      && validarNome(form.name)
   }
 
   return (
@@ -67,11 +67,11 @@ const Cadastro = () => {
       <Form>
         <h1>Faça o seu Cadastro 👋</h1>
         <Input
-          name='nome'
+          name='name'
           placeholder='Digite o seu nome'
           onChange={handleChange}
           type='text'
-        />       
+        />
         <Input
           name='email'
           placeholder='Digite o seu e-mail'
@@ -90,33 +90,33 @@ const Cadastro = () => {
           onChange={handleChange}
           type='password'
         />
+        <Checkbox
+          label={'Sou revendedor'}
+          id={'checkbox'}
+          value={checked}
+          onChange={onChange}
+        />
+        {checked && (
+          <Input
+            name='shop_name'
+            placeholder='Digite sua loja'
+            onChange={handleChange}
+            type='text'
+          />
+        )}
         <Botao
           type='submit'
           text='Efetuar Cadastro!'
           onClick={handleSubmit}
           disabled={loading === true || !validadorInput()}
         />
-        <Checkbox
-        label={'Sou revendedor'}
-        id={'checkbox'}
-        value={checked}
-        onChange={onChange}
-        />
-        {checked && (
-          <Input
-          name='show_name'
-          placeholder='Digite sua loja'
-          onChange={handleChange}
-          type='text'          
-          />
-        )}
         <SubContainerSign>
           <p>Já possui conta?</p>
           <NavLink to="*">Login</NavLink>
         </SubContainerSign>
       </Form>
     </Container>
-    
+
   )
 }
 
